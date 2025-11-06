@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Simlogs Ops List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-50 text-slate-800">
+    <!-- Skip to content (keyboard users) -->
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:text-slate-900 focus:ring-2 focus:ring-slate-500 rounded px-3 py-2">
+      Skip to main content
+    </a>
+
+    <!-- Top Nav -->
+    <nav class="sticky top-0 z-10 bg-white/90 backdrop-blur border-b border-slate-200" role="navigation" aria-label="Primary">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img src="" alt="Simlog Solution logo" width="36" height="36" class="h-9 w-9 rounded bg-slate-200 object-cover" />
+          <span class="font-semibold tracking-tight">Simlog Solution</span>
+        </div>
+        <h1 class="hidden sm:block text-lg font-semibold" aria-current="page">Ops List</h1>
+        <div class="flex items-center gap-2">
+          <button type="button" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50 active:scale-[.98]" aria-label="Edit entry">
+            <span aria-hidden="true">✏️</span> <span class="sr-only sm:not-sr-only">Edit</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main id="main" class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8" role="main">
+      <form class="space-y-6" aria-describedby="form-help">
+        <!-- Header -->
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-semibold">New Entry</h2>
+            <p id="form-help" class="text-sm text-slate-500">All required fields are marked with <span class="text-red-600" aria-hidden="true">*</span>.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="reset" class="rounded-xl border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50">Reset</button>
+            <button type="submit" class="rounded-xl bg-slate-900 text-white px-4 py-2 text-sm font-medium hover:bg-slate-800">Save</button>
+          </div>
+        </div>
+
+        <!-- Main Details -->
+        <section class="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200/70 p-5 sm:p-6" aria-labelledby="main-details-title">
+          <h3 id="main-details-title" class="text-base font-semibold mb-4">Main Details</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Date -->
+            <div class="flex flex-col gap-1.5">
+              <label for="entryDate" class="text-sm font-medium text-slate-700">Date <span class="text-red-600" aria-hidden="true">*</span></label>
+              <input id="entryDate" name="date" type="date" autocomplete="off"
+                     class="rounded-xl border-slate-300 focus:border-slate-500 focus:ring-slate-500" required />
+            </div>
+            <!-- Truck Number -->
+            <div class="flex flex-col gap-1.5">
+              <label for="truckNumber" class="text-sm font-medium text-slate-700">Truck Number</label>
+              <input id="truckNumber" name="truckNumber" type="text" inputmode="text" autocomplete="off" maxlength="20"
+                     placeholder="Truck Number"
+                     class="rounded-xl border-slate-300 placeholder-slate-400 focus:border-slate-500 focus:ring-slate-500" />
+            </div>
+            <!-- Business Name -->
+            <div class="flex flex-col gap-1.5">
+              <label for="businessName" class="text-sm font-medium text-slate-700">Business Name <span class="text-red-600" aria-hidden="true">*</span></label>
+              <input id="businessName" name="businessName" type="text" autocomplete="organization" maxlength="80" required
+                     placeholder="Business name"
+                     class="rounded-xl border-slate-300 placeholder-slate-400 focus:border-slate-500 focus:ring-slate-500" />
+            </div>
+            <!-- Segment -->
+            <div class="flex flex-col gap-1.5">
+              <label for="segment" class="text-sm font-medium text-slate-700">Segment <span class="text-red-600" aria-hidden="true">*</span></label>
+              <select id="segment" name="segment" required
+                      class="rounded-xl border-slate-300 focus:border-slate-500 focus:ring-slate-500"
+                      aria-describedby="segment-help">
+                <option value="" disabled selected>Please select segment</option>
+                <option value="equipment">Equipment</option>
+                <option value="fuel">Fuel</option>
+                <option value="operations">Operations</option>
+                <option value="truck_maint">Truck Maint</option>
+                <option value="uniforms">Uniforms</option>
+              </select>
+              <p id="segment-help" class="text-xs text-slate-500">Choosing a segment reveals its specific fields.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Truck Maint -->
+        <section class="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200/70 p-5 sm:p-6 hidden"
+                 data-segment="truck_maint" aria-hidden="true" aria-labelledby="tm-title">
+          <h3 id="tm-title" class="text-base font-semibold mb-4">Truck Issues / Assets</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label for="assetN" class="text-sm font-medium text-slate-700">Asset</label>
+              <select id="assetN" name="asset" class="rounded-xl border-slate-300 focus:border-slate-500 focus:ring-slate-500">
+                <option value="" disabled selected>Please select asset</option>
+              </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="assetAmt" class="text-sm font-medium text-slate-700">Amount</label>
+              <input id="assetAmt" name="assetAmount" type="number" inputmode="decimal" min="0" step="0.01"
+                     placeholder="Enter amount"
+                     class="rounded-xl border-slate-300 placeholder-slate-400 focus:border-slate-500 focus:ring-slate-500" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="assetDesc" class="text-sm font-medium text-slate-700">Description (optional)</label>
+              <input id="assetDesc" name="assetDesc" type="text" maxlength="500"
+                     placeholder="Brief note"
+                     class="rounded-xl border-slate-300 placeholder-slate-400 focus:border-slate-500 focus:ring-slate-500" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Operations -->
+        <section class="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200/70 p-5 sm:p-6 hidden"
+                 data-segment="operations" aria-hidden="true" aria-labelledby="ops-title">
+          <h3 id="ops-title" class="text-base font-semibold mb-4">Operations</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label for="opType" class="text-sm font-medium text-slate-700">Operation Type</label>
+              <select id="opType" name="opType" class="rounded-xl border-slate-300 focus:border-slate-500 focus:ring-slate-500">
+                <option value="" disabled selected>Please select operation type</option>
+                <option value="planning">Planning</option>
+                <option value="partial_delivery">Partial Delivery</option>
+                <option value="admin_fee">Admin Fee</option>
+                <option value="samsara">Samsara</option>
+                <option value="overflow">Overflow</option>
+              </select>
+            </div>
+            <div class="flex flex-col gap-1.5 hidden">
+              <label for="opCost" class="text-sm font-medium text-slate-700">Cost</label>
+              <input id="opCost" name="opCost" type="number" inputmode="decimal" min="0" step="0.01"
+                     placeholder="0.00"
+                     class="rounded-xl border-slate-300 placeholder-slate-400 focus:border-slate-500 focus:ring-slate-500" />
+            </div>
+            <div id="orderNumberField" class="flex flex-col gap-1.5 hidden">
+              <label for="orderNumber" class="text-sm font-medium text-slate-700">Order #</label>
+              <input id="orderNumber" name="orderNumber" type="text" inputmode="numeric" autocomplete="off"
+                     placeholder="Enter order number"
+                     class="rounded-xl border-slate-300 placeholder-slate-400 focus:border-slate-500 focus:ring-slate-500" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Equipment (id changed to “equipment” to match your JS) -->
+        <section class="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200/70 p-5 sm:p-6 hidden"
+                 data-segment="equipment" aria-hidden="true" aria-labelledby="equip-title">
+          <h3 id="equip-title" class="text-base font-semibold mb-4">Equipment</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label for="equipmentType" class="text-sm font-medium text-slate-700">Equipment Type</label>
+              <select id="equipmentType" name="equipment"
+                      class="rounded-xl border-slate-300 focus:border-slate-500 focus:ring-slate-500">
+                <option value="" disabled selected>Please select equipment</option>
+                <option value="straps">Straps</option>
+                <option value="bands">Bands</option>
+                <option value="venting">Venting</option>
+                <option value="clamps">Clamps</option>
+                <option value="pads">Pads</option>
+                <option value="shrink_wrap">Shrink Wrap</option>
+                <option value="door_guard">Door Guard</option>
+                <option value="floor_guard">Floor Guard</option>
+              </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="equipQty" class="text-sm font-medium text-slate-700">Quantity</label>
+              <input id="equipQty" name="equipQty" type="number" inputmode="numeric" min="1" step="1"
+                     placeholder="0"
+                     class="rounded-xl border-slate-300 placeholder-slate-400 focus:border-slate-500 focus:ring-slate-500" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Uniforms (fixed class name) -->
+        <section class="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200/70 p-5 sm:p-6 uniform-list hidden"
+                 data-segment="uniforms" aria-hidden="true" aria-labelledby="uniforms-title">
+          <h3 id="uniforms-title" class="text-base font-semibold mb-4">Uniforms</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label for="uniformType" class="text-sm font-medium text-slate-700">Uniform Type</label>
+              <select id="uniformType" name="uniformType"
+                      class="rounded-xl border-slate-300 focus:border-slate-500 focus:ring-slate-500">
+                <option value="" disabled selected>Please select uniform type</option>
+                <option value="tshirts">T-Shirts</option>
+                <option value="hoodies">Hoodies</option>
+                <option value="jackets">Jackets</option>
+                <option value="caps">Caps</option>
+                <option value="rain_gear">Rain Gear</option>
+              </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="uniformQty" class="text-sm font-medium text-slate-700">Quantity</label>
+              <input id="uniformQty" name="uniformQty" type="number" inputmode="numeric" min="1" step="1"
+                     placeholder="0"
+                     class="rounded-xl border-slate-300 placeholder-slate-400 focus:border-slate-500 focus:ring-slate-500" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Fuel -->
+        <section class="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200/70 p-5 sm:p-6 hidden"
+                 data-segment="fuel" aria-hidden="true" aria-labelledby="fuel-title">
+          <h3 id="fuel-title" class="text-base font-semibold mb-4">Fuel</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label for="fuelType" class="text-sm font-medium text-slate-700">Fuel Type</label>
+              <select id="fuelType" name="fuelType"
+                      class="rounded-xl border-slate-300 focus:border-slate-500 focus:ring-slate-500">
+                <option value="" disabled selected>Please select fuel type</option>
+                <option value="diesel">Diesel</option>
+                <option value="gasoline">Gasoline</option>
+              </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="fuelCost" class="text-sm font-medium text-slate-700">Cost</label>
+              <input id="fuelCost" name="fuelCost" type="number" inputmode="decimal" min="0" step="0.01"
+                     placeholder="0.00"
+                     class="rounded-xl border-slate-300 placeholder-slate-400 focus:border-slate-500 focus:ring-slate-500"/>
+            </div>
+          </div>
+        </section>
+
+        <!-- Notes -->
+        <section class="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200/70 p-5 sm:p-6" aria-labelledby="notes-title">
+          <h3 id="notes-title" class="text-base font-semibold mb-4">Notes</h3>
+          <div class="flex flex-col gap-1.5">
+            <label for="notes" class="text-sm font-medium text-slate-700">Additional Notes</label>
+            <textarea id="notes" name="notes" rows="5" placeholder="Enter additional notes here..."
+                      class="rounded-2xl border-slate-300 placeholder-slate-400 focus:border-slate-500 focus:ring-slate-500"></textarea>
+          </div>
+        </section>
+
+        <!-- Next -->
+        <div class="mt-4">
+          <button id="btnNextSegment" type="button"
+                  class="rounded-xl bg-slate-900 text-white px-4 py-2 text-sm font-medium hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed"
+                  aria-describedby="segment-help"
+                  disabled>
+            Next
+          </button>
+        </div>
+
+        <!-- Footer Actions -->
+        <div id="footerActions" class="flex items-center justify-end gap-2 hidden">
+          <button type="button" class="rounded-xl border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50">Cancel</button>
+          <button type="submit" class="rounded-xl bg-slate-900 text-white px-4 py-2 text-sm font-medium hover:bg-slate-800">Save Entry</button>
+        </div>
+
+        <!-- Add-More Modal -->
+        <div id="addMoreModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="addMoreTitle" aria-describedby="addMoreDesc">
+          <div class="absolute inset-0 bg-black/40" data-close="true" aria-hidden="true"></div>
+          <div class="relative mx-auto mt-28 max-w-md rounded-2xl bg-white p-6 shadow-xl ring-1 ring-slate-200 outline-none" tabindex="-1">
+            <h4 id="addMoreTitle" class="text-lg font-semibold">Add another segment?</h4>
+            <p id="addMoreDesc" class="mt-1 text-sm text-slate-600">Do you need to log an additional segment for this entry?</p>
+            <div class="mt-4 flex items-center justify-end gap-2">
+              <button id="modalNo" type="button"
+                      class="rounded-xl bg-slate-900 text-white px-4 py-2 text-sm font-medium hover:bg-slate-800">
+                No, I’m done
+              </button>
+              <button id="modalYes" type="button"
+                      class="rounded-xl border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50">
+                Yes, add another
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </main>
+
+    <!-- Your app logic -->
+    <script src="/send.js" type="module"></script>
+
+    <!-- Small a11y helpers: sync aria-hidden on section toggles + modal focus trap -->
+    <script>
+      // Sync aria-hidden with Tailwind's "hidden" class for segment sections
+      const segSections = document.querySelectorAll('[data-segment]');
+      const syncHidden = () => {
+        segSections.forEach(sec => {
+          sec.setAttribute('aria-hidden', sec.classList.contains('hidden') ? 'true' : 'false');
+        });
+      };
+      syncHidden();
+      // Re-sync on any change to the segment select (your /send.js already toggles classes)
+      document.getElementById('segment')?.addEventListener('change', () => {
+        // wait a tick for your JS to toggle classes, then sync
+        setTimeout(syncHidden, 0);
+      });
+
+      // Accessible modal focus trap (works with your existing modal buttons)
+      (function modalA11y(){
+        const modal = document.getElementById('addMoreModal');
+        if (!modal) return;
+        const focusable = () => modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+
+        function trap(e) {
+          const nodes = Array.from(focusable());
+          if (nodes.length === 0) return;
+          const first = nodes[0], last = nodes[nodes.length - 1];
+          if (e.key === 'Tab') {
+            if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+            else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+          } else if (e.key === 'Escape') {
+            close();
+          }
+        }
+        function open() {
+          modal.classList.remove('hidden');
+          // focus the dialog container
+          const dialog = modal.querySelector('[tabindex="-1"]') || modal;
+          dialog.focus();
+          document.addEventListener('keydown', trap);
+        }
+        function close() {
+          modal.classList.add('hidden');
+          document.removeEventListener('keydown', trap);
+          document.getElementById('btnNextSegment')?.focus();
+        }
+
+        // Hook into your existing buttons if needed (no-op if /send.js opens/close itself)
+        document.getElementById('modalYes')?.addEventListener('click', close);
+        document.getElementById('modalNo')?.addEventListener('click', close);
+        modal.querySelector('[data-close="true"]')?.addEventListener('click', close);
+
+        // Expose minimal API if you want to call open() from /send.js
+        window._modalOpen = open;
+        window._modalClose = close;
+      })();
+    </script>
+  </body>
+</html>
+
