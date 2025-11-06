@@ -1,10 +1,7 @@
 
-// Firebase v10 CDN modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-// import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app-check.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-// 1) Your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBXifH24fZNfURFMy-uHYS7RddqwtKDlZ0",
   authDomain: "simlog-12729.firebaseapp.com",
@@ -14,23 +11,22 @@ const firebaseConfig = {
   appId: "1:44605944069:web:9046e060ce3bfba1e4476c",
   measurementId: "G-B57905172V"
 };
-
 // 2) Init
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Helpers
+
 const $ = (sel) => document.querySelector(sel);
 
-// ===== INITIALIZE =====
+
 document.addEventListener('DOMContentLoaded', () => {
-  // mark core fields required (defensive)
+  
   $('#entryDate')?.setAttribute('required', '');
   $('#truckNumber')?.setAttribute('required', '');
   $('#businessName')?.setAttribute('required', '');
   $('#segment')?.setAttribute('required', '');
 
-  // show/hide by segment
+  
   const seg = $('#segment');
   seg?.addEventListener('change', () => {
     if (!isMainValid(true)) {
@@ -43,16 +39,16 @@ document.addEventListener('DOMContentLoaded', () => {
     applySegmentRequired(seg.value);
   });
 
-  // initial state
+  
   adjustVisibility();
   updateNextButton();
   applySegmentRequired(seg?.value || '');
 
-  // Operations: show Order # only for Partial Delivery or Overflow
+  
   wireOperationsConditional();
 });
 
-// ===== VISIBILITY =====
+
 function adjustVisibility() {
   const value = ($('#segment')?.value || '').trim();
   document.querySelectorAll('[data-segment]').forEach(sec => {
@@ -60,9 +56,9 @@ function adjustVisibility() {
   });
 }
 
-// ===== MAIN VALIDATION (gate segment reveal) =====
+
 const segSelect = document.getElementById('segment');
-const nextBtn   = document.getElementById('btnNextSegment'); // may be null if not on page
+const nextBtn   = document.getElementById('btnNextSegment');
 
 function isMainValid(showMessage = true) {
   const dateEl  = document.getElementById('entryDate');
@@ -82,9 +78,9 @@ function isMainValid(showMessage = true) {
   return true;
 }
 
-// ===== SEGMENT-SPECIFIC REQUIRED FLAGS =====
+
 function applySegmentRequired(value) {
-  // clear all first
+  
   [
     '#equipmentType', '#equipQty',
     '#fuelType', '#fuelAmount', '#fuelCost',
@@ -114,7 +110,7 @@ function applySegmentRequired(value) {
   }
 }
 
-// ===== OPERATIONS: conditional Order # =====
+
 function wireOperationsConditional() {
   const opType = document.getElementById('opType');
   const orderField = document.getElementById('orderNumberField');
@@ -130,7 +126,7 @@ function wireOperationsConditional() {
   });
 }
 
-// ===== WIZARD STATE =====
+
 const selectedSegments = [];
 const footer      = document.getElementById('footerActions');
 const modal       = document.getElementById('addMoreModal');
@@ -150,7 +146,7 @@ function clearHiddenSegmentInputs() {
     .forEach(el => { if (el.type === 'checkbox' || el.type === 'radio') el.checked = false; else el.value = ''; });
 }
 
-// ===== READ SEGMENT DATA (MERGED operations case) =====
+
 function readSegmentData(segment) {
   const data = {};
   switch (segment) {
@@ -186,7 +182,7 @@ function readSegmentData(segment) {
   return data;
 }
 
-// simple per-segment check hook
+
 function validateSegment(segment) {
   if (!segment) return false;
   if (segment === 'operations') {
@@ -206,10 +202,10 @@ function validateSegment(segment) {
       }
     }
   }
-  // you can add more per-segment validation here if needed
+ 
   return true;
 }
-// Helper to require fields; shows native tooltip & focuses first missing
+
 function requireFields(e, selectors) {
   for (const sel of selectors) {
     const el = document.querySelector(sel);
@@ -226,7 +222,7 @@ function requireFields(e, selectors) {
   }
   return true;
 }
-// Optional: enforce qty > 0 for number fields
+
 function requirePositiveNumber(e, selector) {
   const el = document.querySelector(selector);
   if (!el) return true;
@@ -235,16 +231,15 @@ function requirePositiveNumber(e, selector) {
     e.preventDefault();
     el.setAttribute('min', '1');
     el.setAttribute('required', '');
-    // Give a friendly message if you want:
-    // el.setCustomValidity('Please enter a quantity greater than 0');
+    
     el.reportValidity?.();
     el.focus?.();
-    // el.setCustomValidity(''); // clear after showing if you set one
+    
     return false;
   }
   return true;
 }
-// Also guard Next by main validity
+
 nextBtn?.addEventListener('click', (e) => {
   if (!isMainValid(true)) {
     e.preventDefault();
@@ -263,16 +258,16 @@ nextBtn?.addEventListener('click', (e) => {
   }
 
   if (!validateSegment(segment)) return;
-  // store / replace segment snapshot
+  
   const data = readSegmentData(segment);
   const idx = selectedSegments.findIndex(s => s.segment === segment);
   if (idx >= 0) selectedSegments[idx] = { segment, data };
   else selectedSegments.push({ segment, data });
 
-  // open the add-more modal
+  
   openModal();
 });
-//lock/unlock main fields 
+
 function setMainLocked(locked) {
   const els = [
     document.getElementById('entryDate'),
@@ -282,7 +277,7 @@ function setMainLocked(locked) {
   els.forEach(el => {
     if (!el) return;
     if (locked) {
-      el.setAttribute('disabled', '');          // fully prevents edits & focus
+      el.setAttribute('disabled', '');          
       el.setAttribute('aria-disabled', 'true');
       el.classList.add('bg-slate-100','text-slate-400','cursor-not-allowed');
     } else {
@@ -292,10 +287,10 @@ function setMainLocked(locked) {
     }
   });
 }
-// Modal YES → add another
+
 modalYesBtn?.addEventListener('click', () => {
   closeModal();
-  footer?.classList.add('hidden'); // keep footer hidden while adding
+  footer?.classList.add('hidden'); 
     setMainLocked(true);
 
   if (segSelect) {
@@ -307,17 +302,17 @@ modalYesBtn?.addEventListener('click', () => {
   clearHiddenSegmentInputs();
 });
 
-// Modal NO → done adding
+
 modalNoBtn?.addEventListener('click', () => {
   closeModal();
-  footer?.classList.remove('hidden'); // show Save/Cancel
+  footer?.classList.remove('hidden'); 
     setMainLocked(false);
 });
 
-// ===== SUBMIT (to Firestore) =====
+
 const form = document.querySelector('main form');
 
-// pre-submit guard for HTML5 validity
+
 form?.addEventListener('submit', (e) => {
   if (!form.checkValidity?.() || !$('#entryDate')?.value) {
     e.preventDefault();
@@ -340,7 +335,7 @@ form?.addEventListener('submit', async (e) => {
 
   const currentSeg = (segSelect?.value || '').trim();
 
-  // base fields
+
   const base = {
     date: $('#entryDate')?.value || null,
     truckNumber: $('#truckNumber')?.value?.trim() || null,
@@ -349,7 +344,7 @@ form?.addEventListener('submit', async (e) => {
     createdAt: serverTimestamp()
   };
 
-  // de-duplicate segments (wizard + currently visible)
+
   const byKey = {};
   (selectedSegments || []).forEach(s => { if (s?.segment) byKey[s.segment] = s; });
   if (currentSeg) {
@@ -358,7 +353,6 @@ form?.addEventListener('submit', async (e) => {
   const segments = Object.values(byKey);
   const segmentIndex = segments.map(s => s.segment);
 
-  // roll-up cost
   let totalCost = 0;
   segments.forEach(s => {
     const d = s?.data || {};
@@ -377,7 +371,7 @@ form?.addEventListener('submit', async (e) => {
     const docRef = await addDoc(colRef, payload);
     console.log('Saved doc id:', docRef.id);
     alert('Saved!');
-    // reset
+
     form.reset();
     if (segSelect) segSelect.value = '';
     adjustVisibility();
@@ -391,6 +385,7 @@ form?.addEventListener('submit', async (e) => {
     submitBtn && (submitBtn.disabled = false);
   }
 });
+
 
 
 
