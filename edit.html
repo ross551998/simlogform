@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Simlogs Ops List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-50 text-slate-800">
+    <!-- Skip to content (keyboard users) -->
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:text-slate-900 focus:ring-2 focus:ring-slate-500 rounded px-3 py-2">
+      Skip to main content
+    </a>
+
+    <!-- Top Nav -->
+    <nav class="sticky top-0 z-10 bg-white/90 backdrop-blur border-b border-slate-200" role="navigation" aria-label="Primary">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img src="" alt="Simlog Solution logo" width="36" height="36" class="h-9 w-9 rounded bg-slate-200 object-cover" />
+          <span class="font-semibold tracking-tight">Simlog Solution</span>
+        </div>
+        <h1 class="hidden sm:block text-lg font-semibold" aria-current="page">Inventory</h1>
+        <div class="flex items-center gap-2">
+          <button type="button" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50 active:scale-[.98]" aria-label="Edit entry" onclick="goBack()">
+            <span aria-hidden="true">✏️</span> <span class="sr-only sm:not-sr-only">Edit</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main id="main" class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8" role="main">
+      <form class="space-y-6" aria-describedby="form-help">
+        <!-- Header -->
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-semibold">New Entry</h2>
+            <p id="form-help" class="text-sm text-slate-500">All required fields are marked with <span class="text-red-600" aria-hidden="true">*</span>.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="reset" class="rounded-xl border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50">Reset</button>
+            <button type="submit" class="rounded-xl bg-slate-900 text-white px-4 py-2 text-sm font-medium hover:bg-slate-800">Save</button>
+          </div>
+        </div>
+
+        <!-- Main Details -->
+        <section class="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200/70 p-5 sm:p-6" aria-labelledby="main-details-title">
+          <h3 id="main-details-title" class="text-base font-semibold mb-4">Add to inventory List</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Date -->
+            <div class="flex flex-col gap-1.5">
+              <label for="entryDate" class="text-sm font-medium text-slate-700">Date <span class="text-red-600" aria-hidden="true">*</span></label>
+              <input id="entryDate" name="date" type="date" autocomplete="off"
+                     class="rounded-xl border-slate-300 focus:border-slate-500 focus:ring-slate-500" required />
+            </div>
+            <!-- Segment -->
+            <div class="flex flex-col gap-1.5">
+              <label for="segment" class="text-sm font-medium text-slate-700">What would you like to Add? <span class="text-red-600" aria-hidden="true">*</span></label>
+              <select id="segment" name="segment" required
+                      class="rounded-xl border-slate-300 focus:border-slate-500 focus:ring-slate-500"
+                      aria-describedby="segment-help">
+                <option value="" disabled selected>Please select</option>
+                <option value="equipment">Equipment</option>
+                <option value="uniforms">Uniforms</option>
+              </select>
+              <p id="segment-help" class="text-xs text-slate-500">Choosing a segment reveals its specific fields.</p>
+            </div>
+          </div>
+        </section>
+      </form>
+    </main>
+  </body>
+  <Script>
+    function goBack() {
+        window.location.href = '../index.html';
+    }
+  </Script>
+</html>
