@@ -21,13 +21,13 @@
         </div>
         <h1 class="hidden sm:block text-lg font-semibold" aria-current="page">Ops List</h1>
         <div class="flex items-center gap-2">
-          <button type="button" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50 active:scale-[.98]" aria-label="Edit entry">
+          <button type="button" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50 active:scale-[.98]" aria-label="Edit entry" onclick="askForKey()">
             <span aria-hidden="true">✏️</span> <span class="sr-only sm:not-sr-only">Edit</span>
           </button>
         </div>
       </div>
     </nav>
-    <h1>BETA VERSION...... DO NOT SUMBIT REAL SUBMISSION...</h1>
+
     <main id="main" class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8" role="main">
       <form class="space-y-6" aria-describedby="form-help">
         <!-- Header -->
@@ -267,8 +267,17 @@
     </main>
 
     <!-- Your app logic -->
-    <script src="./send.js" type="module"></script>
-
+    <script src="/send.js" type="module"></script>
+    <script>
+      function askForKey() {
+        const key = prompt("Enter your access key:");
+        if (key === '1234') {  //replace with real user key
+          window.location.href = '/edit_list/edit.html';
+        } else {
+          alert("Incorrect key. Access denied.");
+        }
+      }
+    </script>
     <!-- Small a11y helpers: sync aria-hidden on section toggles + modal focus trap -->
     <script>
       // Sync aria-hidden with Tailwind's "hidden" class for segment sections
@@ -327,6 +336,4 @@
     </script>
   </body>
 </html>
-
-
 
