@@ -81,9 +81,7 @@ function renderEquipment(containerId, fieldNames) {
     `);
   });
 }
-function renderUniforms(containerId, fieldNames) {
 
-}
 async function check() {
     try {
         const dv = collection(db, 'faINV_A9K3D2');

@@ -1,6 +1,6 @@
 
 // Firebase v10 CDN modules
-import { db, collection, addDoc, serverTimestamp } from './index.js';
+import { db, collection, addDoc, serverTimestamp, getDocs } from './index.js';
 
 // Helpers
 const $ = (sel) => document.querySelector(sel);
@@ -15,8 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // show/hide by segment
   const seg = $('#segment');
-  seg?.addEventListener('change', () => {
-    if (!isMainValid(true)) {
+  seg?.addEventListener('change', async () => {
+    const ok = await isMainValid(true);
+    if (!ok) {
       seg.value = '';
       adjustVisibility();
       return;
@@ -47,26 +48,78 @@ function adjustVisibility() {
 // ===== MAIN VALIDATION (gate segment reveal) =====
 const segSelect = document.getElementById('segment');
 const nextBtn   = document.getElementById('btnNextSegment'); // may be null if not on page
+//get the truck number
+let _allowedTruckSet = null;
+let _spATruck = null;
 
-function isMainValid(showMessage = true) {
+async function getT() {
+  // Properly return cached sets if already fetched
+  if (_allowedTruckSet && _spATruck) {
+    return { allowed: _allowedTruckSet, special: _spATruck };
+  }
+  try {
+    const truckColl = collection(db, 'truck_id', 'IxpUGRi1RCfvdQ94Usqy', 'Truck_number');
+    const snap = await getDocs(truckColl);
+    const allowed = new Set();
+    const spa = new Set();
+    snap.docs.forEach((doc) => {
+      const data = doc.data() || {};
+      const contractors = data.Contractors || {};
+      const employees = data.Employees || {};
+      for (const [code, val] of Object.entries(contractors)) {
+        if (val === true) {
+          allowed.add(code.toUpperCase());
+        } else if (val === false) {
+          spa.add(code.toUpperCase());
+        }
+      }
+      for (const [code, val] of Object.entries(employees)) {
+        if (val === true) {
+          allowed.add(code.toUpperCase());
+        } else if (val === false) {
+          spa.add(code.toUpperCase());
+        }
+      }
+    });
+    _allowedTruckSet = allowed;
+    _spATruck = spa;
+
+    return { allowed, special: spa };
+  } catch (e) {
+    console.error('Error fetching truck list:', e);
+    return { allowed: new Set(), special: new Set() };
+  }
+}
+
+
+async function isMainValid(showMessage = true) {
   const dateEl  = document.getElementById('entryDate');
   const truckEl = document.getElementById('truckNumber');
   const bizEl   = document.getElementById('businessName');
-  const checks = [dateEl, truckEl, bizEl];
+  const checks  = [dateEl, truckEl, bizEl];
+  const { allowed, special } = await getT();
+
   for (const el of checks) {
     if (!el) continue;
-    if(el === truckEl) {
-      const tv = el.value.trim();
-      const tp = /^4s\d{3}$/i;
-      if(!tp.test(tv)) {
-        if(showMessage) {
-          el.setCustomValidity('Truck Number must start with "4S" followed by 3 digits (e.g., 4S123).');
+    if (el === truckEl) {
+      const tv = el.value.trim().toUpperCase();
+
+      if (allowed.has(tv)) {
+        el.setCustomValidity('');
+      } else if (special.has(tv)) {
+        // Special truck case
+        if (showMessage) {
+          alert(`Truck ${tv} is a special truck number, make sure this is correct.`);
+        }
+        return true; // <-- block until user confirms
+      } else {
+        // Not found at all
+        if (showMessage) {
+          el.setCustomValidity(`Truck ${tv} is not in the allowed list.`);
           el.reportValidity();
           el.focus();
         }
         return false;
-      } else {
-        el.setCustomValidity('');
       }
     }
     if (!el.value || (el.checkValidity && !el.checkValidity())) {
@@ -79,7 +132,6 @@ function isMainValid(showMessage = true) {
   }
   return true;
 }
-
 // ===== SEGMENT-SPECIFIC REQUIRED FLAGS =====
 function applySegmentRequired(value) {
   // clear all first
