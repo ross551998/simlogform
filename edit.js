@@ -1,5 +1,5 @@
 
-import { db, collection, addDoc, serverTimestamp, onSnapshot, getDocs, updateDoc  } from '../index.js';
+import { db, collection, addDoc, serverTimestamp, onSnapshot, getDocs, updateDoc  } from './index.js';
 
 
 function esc(s){
@@ -127,6 +127,7 @@ async function addEntry() {
   }
 }
 addEntry();
+
 
 
 
