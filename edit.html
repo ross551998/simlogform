@@ -22,7 +22,7 @@
         <h1 class="hidden sm:block text-lg font-semibold" aria-current="page">Inventory</h1>
         <div class="flex items-center gap-2">
           <button type="button" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50 active:scale-[.98]" aria-label="Edit entry" onclick="goBack()">
-            <span aria-hidden="true">✏️</span> <span class="sr-only sm:not-sr-only">Edit</span>
+            <span aria-hidden="true">✏️</span> <span class="sr-only sm:not-sr-only">Back</span>
           </button>
         </div>
       </div>
@@ -66,6 +66,12 @@
             </div>
           </div>
         </section>
+        <!-- Dynamic fields will be injected here based on segment selection -->
+        <section id="dynamic-fields" class="hidden">
+            <div id="equipment-container">
+              
+            </div>
+        </section>
       </form>
     </main>
   </body>
@@ -74,4 +80,5 @@
         window.location.href = '../index.html';
     }
   </Script>
+  <Script src="./edit.js" type="module"></Script>
 </html>

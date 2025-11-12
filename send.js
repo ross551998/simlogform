@@ -1,23 +1,6 @@
 
 // Firebase v10 CDN modules
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-// import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app-check.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-// 1) Your Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyBXifH24fZNfURFMy-uHYS7RddqwtKDlZ0",
-  authDomain: "simlog-12729.firebaseapp.com",
-  projectId: "simlog-12729",
-  storageBucket: "simlog-12729.firebasestorage.app",
-  messagingSenderId: "44605944069",
-  appId: "1:44605944069:web:9046e060ce3bfba1e4476c",
-  measurementId: "G-B57905172V"
-};
-
-// 2) Init
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+import { db, collection, addDoc, serverTimestamp } from './index.js';
 
 // Helpers
 const $ = (sel) => document.querySelector(sel);
@@ -41,13 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
     adjustVisibility();
     updateNextButton();
     applySegmentRequired(seg.value);
+    setMainLocked(true);
   });
 
   // initial state
   adjustVisibility();
   updateNextButton();
   applySegmentRequired(seg?.value || '');
-
+  setMainLocked(false);
   // Operations: show Order # only for Partial Delivery or Overflow
   wireOperationsConditional();
 });
@@ -71,6 +55,20 @@ function isMainValid(showMessage = true) {
   const checks = [dateEl, truckEl, bizEl];
   for (const el of checks) {
     if (!el) continue;
+    if(el === truckEl) {
+      const tv = el.value.trim();
+      const tp = /^4s\d{3}$/i;
+      if(!tp.test(tv)) {
+        if(showMessage) {
+          el.setCustomValidity('Truck Number must start with "4S" followed by 3 digits (e.g., 4S123).');
+          el.reportValidity();
+          el.focus();
+        }
+        return false;
+      } else {
+        el.setCustomValidity('');
+      }
+    }
     if (!el.value || (el.checkValidity && !el.checkValidity())) {
       if (showMessage) {
         el.reportValidity?.();
@@ -327,7 +325,10 @@ form?.addEventListener('submit', (e) => {
 }, true);
 
 form?.addEventListener('reset', () => {
-    setTimeout(() => setMainLocked(false), 0);
+  setTimeout(() => setMainLocked(false), 0);
+  document.querySelectorAll('[data-segment]').forEach(sec => {
+    sec.classList.add('hidden');
+  });
 })
 
 form?.addEventListener('submit', async (e) => {
